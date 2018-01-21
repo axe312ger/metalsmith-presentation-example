@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "DEBUG=metalsmith* node index.js",
+    "build": "DEBUG=metalsmith* node index.js",
+    "serve": "serve dist",
     "dev": "DEBUG=metalsmith* nodemon index.js"
   },
   "author": "",
@@ -15,6 +16,7 @@
     "metalsmith-markdown": "^0.2.2"
   },
   "devDependencies": {
-    "nodemon": "^1.14.11"
+    "nodemon": "^1.14.11",
+    "serve": "^6.4.8"
   }
 }
