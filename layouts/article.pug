@@ -1,0 +1,16 @@
+extends layout.pug
+
+block content
+  .container
+    .row
+      .card
+        .card-body
+          h1 #{title}
+          | !{contents}
+    .row
+      .btn-group.btn-group-lg.mt-4.mb-4(role="group", aria-label="menu")
+        if next
+          a.btn.btn-info(href=`/${next.path}`) Next: #{next.title}
+        if previous
+          a.btn.btn-info(href=`/${previous.path}`) Previous: #{previous.title}
+

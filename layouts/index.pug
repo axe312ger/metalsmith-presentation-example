@@ -1,0 +1,14 @@
+extends layout.pug
+
+block content
+  .container
+    .content
+      h1 #{title}
+    | !{contents}
+    ul.list-group
+      each article in collections.articles
+        li.list-group-item
+          article
+            h1 #{article.title}
+            | !{article.excerpt}
+            a.btn.btn-primary(href=`/${article.path}`) Read more

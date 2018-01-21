@@ -1,33 +1,47 @@
 const Metalsmith = require('metalsmith')
 const debug = require('metalsmith-debug')
-const layouts = require('metalsmith-layouts')
-const markdown = require('metalsmith-markdown')
+const { report } = require('metalsmith-debug-ui')
 const browserSync = require('metalsmith-browser-sync')
+
+const layouts = require('metalsmith-layouts')
+const collections = require('metalsmith-collections')
+
+const markdown = require('metalsmith-markdown')
+const excerpts = require('metalsmith-excerpts')
 
 const __DEV__ = process.env.NODE_ENV === 'development'
 
 Metalsmith(__dirname)
   .source('content')
   .destination('dist')
+  .metadata({
+    pageTitle: 'My Awesome Blog'
+  })
   .use(__DEV__ && browserSync({
     open: false,
     server: {
-      baseDir: 'dist',
-      directory: true
+      baseDir: 'dist'
     },
     files  : [
       'content/**/*.md',
       'layouts/**/*'
     ]
   }))
-  .use(debug())
+  // Content
   .use(markdown())
-  .metadata({
-    pageTitle: 'My Awesome Blog'
-  })
-  .use(layouts({
-    default: 'default.hbs'
+  .use(excerpts())
+  // Structure
+  .use(collections({
+    articles: {
+      pattern: 'articles/*.html',
+      sortBy: 'date',
+      reverse: true
+    }
   }))
-  .build(function(err) {
-    if (err) throw err;
-  });
+  .use(layouts({
+    default: 'default.pug'
+  }))
+  .use(__DEV__ && report())
+  .build((err) => {
+    if (err) throw err
+  })
